@@ -5,29 +5,69 @@ import { useState } from "react";
 import Checkbox from "expo-checkbox";
 
 export default function Goal({ goal }) {
-  const { removeGoalHandler, editGoalHandler } = useContext(mainContext);
-  const [g, setG] = useState(goal.goal)
+  const { removeGoalHandler, editGoalHandler, setGoals, setCompletedGoals } =
+    useContext(mainContext);
+  const [g, setG] = useState(goal.goal);
+  const [goalId, setGoalId] = useState(goal.id);
   const [isEdited, setIsEdited] = useState(false);
-  const [isCompleted, setIsCompleted] = useState(false)
-  
-  function updateGoal(){
-    setIsEdited(false)
-    editGoalHandler(goal.id, g)
-  }    
+  const [isCompleted, setIsCompleted] = useState(false);
 
+  function updateGoal() {
+    setIsEdited(false);
+    editGoalHandler(goal.id, g);
+  }
+  function addCompletedGoalHandler() {
+    setIsCompleted(!isCompleted);
+
+    setCompletedGoals((currentCompletedGoals) => [
+      ...currentCompletedGoals,
+      {
+        goal: g,
+      },
+    ]);
+
+    setTimeout(() => {
+      setGoals((currentGoals) => {
+        return currentGoals.filter((c) => c.id !== goalId);
+      });
+    }, 500);
+  }
   return (
     <>
-      <View key={goal.index} style={[styles.goalArea, {backgroundColor: isCompleted ? "#f87171" : "#dbeafe"}]}>
+      <View
+        key={goal.index}
+        style={[
+          styles.goalArea,
+          { backgroundColor: isCompleted ? "#f87171" : "#dbeafe" },
+        ]}
+      >
         <View id="goal-text">
           <View style={styles.goalTextArea}>
-            <Checkbox value={isCompleted} onValueChange={()=>setIsCompleted(!isCompleted)}/>
+            <Checkbox
+              value={isCompleted}
+              onValueChange={() => addCompletedGoalHandler()}
+            />
             {isEdited ? (
               <>
-              <TextInput style={styles.editGoalArea} value={g} onChangeText={(txt)=> setG(txt)} placeholder="Edit your goal"/>
+                <TextInput
+                  style={styles.editGoalArea}
+                  value={g}
+                  onChangeText={(txt) => setG(txt)}
+                  placeholder="Edit your goal"
+                />
               </>
             ) : (
               <>
-                <Text style={[styles.goalText, {textDecorationLine: isCompleted ? "line-through" : "none"}]}>{g}</Text>
+                <Text
+                  style={[
+                    styles.goalText,
+                    {
+                      textDecorationLine: isCompleted ? "line-through" : "none",
+                    },
+                  ]}
+                >
+                  {g}
+                </Text>
               </>
             )}
           </View>

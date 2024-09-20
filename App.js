@@ -4,12 +4,15 @@ import InputArea from "./components/InputArea";
 import { useState } from "react";
 import { mainContext } from "./context/MainContext";
 import Goals from "./components/Goals";
+import CompletedGoals from "./components/CompletedGoals";
 
 export default function App() {
   const [pressed, setIsPressed] = useState(false);
   const [text, setText] = useState("");
   const [goals, setGoals] = useState([]);
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [completedGoals, setCompletedGoals] = useState([]);
+  
   function addGoalHandler() {
     const date = new Date();
     if (text !== "") {
@@ -33,23 +36,27 @@ export default function App() {
     });
   }
 
-  function editGoalHandler(id, newGoalText){
-    setGoals( goals.filter((g)=>{
-      return g.id === id ? {...g, goal: newGoalText} : g
-    }));  
+  function editGoalHandler(id, newGoalText) {
+    setGoals(
+      goals.filter((g) => {
+        return g.id === id ? { ...g, goal: newGoalText } : g;
+      })
+    );
   }
 
   const data = {
     goals,
+    setGoals,
     removeGoalHandler,
-    editGoalHandler
+    editGoalHandler,
+    setCompletedGoals,
   };
 
   return (
     <>
       <mainContext.Provider value={data}>
         <SafeAreaView>
-          <Header />
+          <Header setIsModalVisible={setIsModalVisible} />
           <InputArea
             pressed={pressed}
             setIsPressed={setIsPressed}
@@ -58,6 +65,20 @@ export default function App() {
             addGoalHandler={addGoalHandler}
           />
           <Goals />
+          {isModalVisible ? (
+            <>
+              <>
+                <CompletedGoals
+                  isModalVisible={isModalVisible}
+                  setIsModalVisible={setIsModalVisible}
+                  completedGoals={completedGoals}
+                  setCompletedGoals={setCompletedGoals}
+                />
+              </>
+            </>
+          ) : (
+            <></>
+          )}
         </SafeAreaView>
       </mainContext.Provider>
     </>

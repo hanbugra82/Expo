@@ -1,11 +1,11 @@
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
-export default function Header() {
+export default function Header({ setIsModalVisible }) {
   return (
     <>
       <View style={styles.header}>
         <Text style={styles.greetingText}>Welcome Back!</Text>
-        <Pressable>
+        <Pressable onPress={() => setIsModalVisible(true)}>
           <Feather name="align-justify" style={styles.icon} />
         </Pressable>
       </View>
@@ -16,9 +16,9 @@ export default function Header() {
 const styles = StyleSheet.create({
   header: {
     display: "flex",
-    flexDirection:"row",
-    alignItems:"center",
-    justifyContent:"space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     margin: 16,
   },
   icon: {
@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
   },
   greetingText: {
     fontWeight: "bold",
-    fontSize: "24",
+    fontSize: 24,
   },
 });
