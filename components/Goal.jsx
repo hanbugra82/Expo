@@ -1,25 +1,55 @@
 import { Text, View, StyleSheet, Pressable, TextInput } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
+import { mainContext, useContext } from "../context/MainContext";
+import { useState } from "react";
+import Checkbox from "expo-checkbox";
 
-export default function Goal({ goal, removeGoalHandler }) {
+export default function Goal({ goal }) {
+  const { removeGoalHandler, editGoalHandler } = useContext(mainContext);
+  const [g, setG] = useState(goal.goal)
+  const [isEdited, setIsEdited] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false)
+  
+  function updateGoal(){
+    setIsEdited(false)
+    editGoalHandler(goal.id, g)
+  }    
 
   return (
     <>
-      <View key={goal.index} style={styles.goalArea}>
+      <View key={goal.index} style={[styles.goalArea, {backgroundColor: isCompleted ? "#f87171" : "#dbeafe"}]}>
         <View id="goal-text">
           <View style={styles.goalTextArea}>
-            <Pressable>
-              <Feather name="square" style={styles.icon} />
-            </Pressable>
-            <Text style={styles.goalText}>{goal.goal}</Text>
+            <Checkbox value={isCompleted} onValueChange={()=>setIsCompleted(!isCompleted)}/>
+            {isEdited ? (
+              <>
+              <TextInput style={styles.editGoalArea} value={g} onChangeText={(txt)=> setG(txt)} placeholder="Edit your goal"/>
+              </>
+            ) : (
+              <>
+                <Text style={[styles.goalText, {textDecorationLine: isCompleted ? "line-through" : "none"}]}>{g}</Text>
+              </>
+            )}
           </View>
         </View>
         <View id="icons" style={styles.iconsArea}>
-          <Pressable>
-            <Text>
-              <Feather name="edit-2" style={styles.icon} />
-            </Text>
-          </Pressable>
+          {isEdited ? (
+            <>
+              <Pressable onPress={() => updateGoal()}>
+                <Text>
+                  <Feather name="check" style={styles.icon} />
+                </Text>
+              </Pressable>
+            </>
+          ) : (
+            <>
+              <Pressable onPress={() => setIsEdited(true)}>
+                <Text>
+                  <Feather name="edit-2" style={styles.icon} />
+                </Text>
+              </Pressable>
+            </>
+          )}
           <Pressable onPress={removeGoalHandler.bind(this, goal.id)}>
             <Text>
               <Feather name="trash" style={styles.icon} />
@@ -37,7 +67,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#dbeafe",
     marginVertical: 6,
     padding: 12,
     borderRadius: "6%",

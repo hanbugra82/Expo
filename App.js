@@ -1,7 +1,8 @@
-import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import Header from "./components/Header";
 import InputArea from "./components/InputArea";
 import { useState } from "react";
+import { mainContext } from "./context/MainContext";
 import Goals from "./components/Goals";
 
 export default function App() {
@@ -32,22 +33,33 @@ export default function App() {
     });
   }
 
+  function editGoalHandler(id, newGoalText){
+    setGoals( goals.filter((g)=>{
+      return g.id === id ? {...g, goal: newGoalText} : g
+    }));  
+  }
+
+  const data = {
+    goals,
+    removeGoalHandler,
+    editGoalHandler
+  };
+
   return (
     <>
-      <SafeAreaView>
-        <Header />
-        <InputArea
-          pressed={pressed}
-          setIsPressed={setIsPressed}
-          text={text}
-          setText={setText}
-          addGoalHandler={addGoalHandler}
-        />
-        <Goals
-          goals={goals}
-          removeGoalHandler={removeGoalHandler}
-        />
-      </SafeAreaView>
+      <mainContext.Provider value={data}>
+        <SafeAreaView>
+          <Header />
+          <InputArea
+            pressed={pressed}
+            setIsPressed={setIsPressed}
+            text={text}
+            setText={setText}
+            addGoalHandler={addGoalHandler}
+          />
+          <Goals />
+        </SafeAreaView>
+      </mainContext.Provider>
     </>
   );
 }

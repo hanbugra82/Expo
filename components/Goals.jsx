@@ -4,11 +4,11 @@ import {
   FlatList,
 } from "react-native";
 import Goal from "./Goal";
+import { mainContext, useContext } from "../context/MainContext";
 
-export default function Goals({
-  goals,
-  removeGoalHandler,
-}) {
+export default function Goals() {
+  const {goals, removeGoalHandler} = useContext(mainContext);
+
   return (
     <>
       <View style={styles.goalsArea}>
@@ -18,7 +18,6 @@ export default function Goals({
             return (
               <Goal
                 goal={goal.item}
-                removeGoalHandler={removeGoalHandler}
               />
             );
           }}
