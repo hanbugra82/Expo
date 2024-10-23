@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     width: "75%",
     borderWidth: 2,
     borderColor: "#eff6ff",
-    borderRadius: 4,
+    borderRadius: "4",
     padding: 8,
   },
   addButton: {

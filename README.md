@@ -11,7 +11,7 @@ To run this project locally, follow these steps:
 
 1) Clone the repository:
 ```bash
-https://github.com/berktugates/GoalTracker.git
+https://github.com/hanbugra82/Expo.git
 ```
 
 2) Navigate to the project folder:
