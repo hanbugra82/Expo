@@ -1,5 +1,5 @@
 # Goal Tracker
-GoalTracker is a minimal mobile application that allows users to add, update, and delete their personal goals. It's designed to help users keep track of their tasks and progress in a simple and intuitive way.
+Goal Tracker is a minimal mobile application that allows users to add, update, and delete their personal goals. It's designed to help users keep track of their tasks and progress in a simple and intuitive way.
 
 ## Features
 * Add Goals : Create new personal goals.
